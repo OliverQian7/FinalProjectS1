@@ -15,6 +15,8 @@ function Player({pic, title, club, country, appearances, goals, assists, likeTex
         <th>{assists}</th>
         <th>{likeText} {likes}    <input type = "submit" value = "Like" onClick = {() => {
           setlikes(likes+1)
+        }} /><br></br><input type = "submit" value = "Dislike" onClick = {() => {
+          setlikes(likes-1)
         }} /></th>
       </tr>
     )

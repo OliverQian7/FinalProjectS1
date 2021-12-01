@@ -1,11 +1,17 @@
 import premlogo from './premlogo.png';
 import son from './son.png';
 import salah from './salah.png';
+import penaldo from './penaldo.png';
+import tomkins from './tomkins.png'
 import './App.css';
 import React, {useState} from 'react'
 import Player from './Player'
+import Search from './Search'
 
 function App() {
+
+  const {search} = window.location;
+  const query = new URLSearchParams(search).get('s');
 
   const [players, setPlayers] = useState([
     {
@@ -25,8 +31,38 @@ function App() {
       appearances: "171",
       goals: "108",
       assists: "42"
+    },
+    {
+      pic: penaldo,
+      title: "Cristiano Ronaldo",
+      club: "Manchester United",
+      country: "Portugal",
+      appearances: "206",
+      goals: "88",
+      assists: "36"
+    },
+    {
+      pic: tomkins,
+      title: "James Tomkins",
+      club:"Crystal Palace",
+      country: "England",
+      appearances: "274",
+      goals: "12",
+      assists: "7"
     }
   ])
+  
+  const filterPlayers = (players, query) => {
+    if (!query) {return players}
+  
+    return players.filter((player) => {
+      const playerName = player.title.toLowerCase()
+      return playerName.includes(query)
+    })
+  }
+  
+  const [searchQuery, setSearchQuery] = useState(query || '')
+  const filteredplayers = filterPlayers(players, searchQuery)
 
   return (
     <div className="App">
@@ -37,8 +73,10 @@ function App() {
           Welcome to the Premier League Player Database
         </p>
         <h2>players</h2>
-        <div><input id = "search"></input><input type="submit" value="Search"></input></div>
-        <br></br>
+        <Search 
+          searchQuery = {searchQuery}
+          setSearchQuery = {setSearchQuery}
+        />
         <table>
         <tr>
             <th></th>
@@ -50,7 +88,7 @@ function App() {
             <th>Assists</th>
             <th>Likes</th>
           </tr>
-          {players.map((player) => 
+          {filteredplayers.map((player) => 
           <Player 
             pic = {player.pic}
             title = {player.title}
@@ -63,7 +101,7 @@ function App() {
           )}
           
         </table>
-        <h2>teams</h2>
+        <h2>Premier League Table</h2>
         <table>
           <tr>
           <th></th>
