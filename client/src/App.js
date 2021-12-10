@@ -1,10 +1,10 @@
 import premlogo from './premlogo.png';
-import son from './son.png';
+/*import son from './son.png';
 import salah from './salah.png';
 import penaldo from './penaldo.png';
-import tomkins from './tomkins.png'
+import tomkins from './tomkins.png'*/
 import './App.css';
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Player from './Player'
 import Search from './Search'
 
@@ -15,42 +15,92 @@ function App() {
 
   const [players, setPlayers] = useState([
     {
-      pic: son,
+      id: 1,
+      //pic: son,
       title: "Heung-min Son",
       club: "Spurs",
       country: "South Korea",
       appearances: "209",
       goals: "74",
-      assists: "40"
+      assists: "40",
+     // likes: 0
     },
     {
-      pic: salah,
+      id: 2,
+      //pic: salah,
       title: "Mohamed Salah",
       club: "Liverpool",
       country: "Egypt",
       appearances: "171",
       goals: "108",
-      assists: "42"
+      assists: "42",
+     // likes: 0
     },
     {
-      pic: penaldo,
+      id: 3,
+      //pic: penaldo,
       title: "Cristiano Ronaldo",
       club: "Manchester United",
       country: "Portugal",
       appearances: "206",
       goals: "88",
-      assists: "36"
+      assists: "36",
+      //likes: 0
     },
     {
-      pic: tomkins,
+      id: 4,
+     // pic: tomkins,
       title: "James Tomkins",
       club:"Crystal Palace",
       country: "England",
       appearances: "274",
       goals: "12",
-      assists: "7"
+      assists: "7",
+      //likes: 0
     }
   ])
+
+  const like=(num) => {
+    const index = players.findIndex((player) => player.id == num)
+    players[index].likes = players[index].likes + 1
+    setPlayers([...players])
+
+    const payload = {
+      method: "POST",
+      headers: {
+        "Content-Type": "applicatoin/json"
+      },
+      body: JSON.stringify({num})
+    }
+    fetch ("/like", payload)
+      .then(res => res.json())
+      .then(res => console.info(res))
+  }
+
+  const dislike=(num) => {
+    const index = players.findIndex((player) => player.id == num)
+    players[index].likes = players[index].likes - 1
+    setPlayers([...players])
+
+    const payload = {
+      method: "POST",
+      headers: {
+        "Content-Type": "applicatoin/json"
+      },
+      body: JSON.stringify({num})
+    }
+    fetch ("/dislike", payload)
+      .then(res => res.json())
+      .then(res => console.info(res))
+  }
+
+  useEffect(()=>{
+    fetch('/players')
+      .then(res => res.json())
+      .then(data => {
+       setPlayers(data.players)
+      })
+  },[])
   
   const filterPlayers = (players, query) => {
     if (!query) {return players}
@@ -90,6 +140,8 @@ function App() {
           </tr>
           {filteredplayers.map((player) => 
           <Player 
+            key = {player.id}
+            id = {player.id}
             pic = {player.pic}
             title = {player.title}
             club = {player.club}
@@ -97,10 +149,23 @@ function App() {
             appearances = {player.appearances}
             goals = {player.goals}
             assists = {player.assists}
+            likes = {player.likes}
+            setlikes = {like}
+            dislike = {dislike}
           />
           )}
           
         </table>
+        
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+
+/*
         <h2>Premier League Table</h2>
         <table>
           <tr>
@@ -147,10 +212,4 @@ function App() {
             <th>+28</th>
             <th>28</th>
           </tr>
-        </table>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+        </table> */

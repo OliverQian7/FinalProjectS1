@@ -43,6 +43,11 @@ table, th, td {
   color: #61dafb;
 }
 
+#buttonn {
+  background-color: rebeccapurple;
+  color: white;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
