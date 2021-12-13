@@ -13,6 +13,7 @@ function App() {
   const {search} = window.location;
   const query = new URLSearchParams(search).get('s');
 
+  //array of players
   const [players, setPlayers] = useState([
     {
       id: 1,
@@ -60,6 +61,7 @@ function App() {
     }
   ])
 
+  //function for liking players
   const like=(id) => {
     const index = players.findIndex((player) => player.id == id)
     players[index].likes = players[index].likes + 1
@@ -77,6 +79,7 @@ function App() {
       .then(res => console.info(res))
   }
 
+  //function for disliking players
   const dislike=(id) => {
     const index = players.findIndex((player) => player.id == id)
     players[index].likes = players[index].likes - 1
@@ -94,6 +97,7 @@ function App() {
       .then(res => console.info(res))
   }
 
+  //sets up the players array with data from database 
   useEffect(()=>{
     fetch('/players')
       .then(res => res.json())
@@ -102,15 +106,17 @@ function App() {
       })
   },[])
   
+  //filters players based on if text in search bar is included in a player's name
   const filterPlayers = (players, query) => {
     if (!query) {return players}
   
     return players.filter((player) => {
       const playerName = player.title.toLowerCase()
-      return playerName.includes(query)
+      return playerName.includes(query.toLowerCase())
     })
   }
   
+  //the text searched in the search bar
   const [searchQuery, setSearchQuery] = useState(query || '')
   const filteredplayers = filterPlayers(players, searchQuery)
 
