@@ -60,34 +60,34 @@ function App() {
     }
   ])
 
-  const like=(num) => {
-    const index = players.findIndex((player) => player.id == num)
+  const like=(id) => {
+    const index = players.findIndex((player) => player.id == id)
     players[index].likes = players[index].likes + 1
     setPlayers([...players])
 
     const payload = {
       method: "POST",
       headers: {
-        "Content-Type": "applicatoin/json"
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({num})
+      body: JSON.stringify({id})
     }
     fetch ("/like", payload)
       .then(res => res.json())
       .then(res => console.info(res))
   }
 
-  const dislike=(num) => {
-    const index = players.findIndex((player) => player.id == num)
+  const dislike=(id) => {
+    const index = players.findIndex((player) => player.id == id)
     players[index].likes = players[index].likes - 1
     setPlayers([...players])
 
     const payload = {
       method: "POST",
       headers: {
-        "Content-Type": "applicatoin/json"
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({num})
+      body: JSON.stringify({id})
     }
     fetch ("/dislike", payload)
       .then(res => res.json())
