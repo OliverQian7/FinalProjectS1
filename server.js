@@ -5,6 +5,7 @@ const db = require('better-sqlite3')('database.db')
 app.use(express.static('./client/build'))
 app.use(express.json())
 
+//gets the entire player table from the database
 app.get('/players',(req,res) => {
     const query = db.prepare("SELECT * FROM players")
     const players = query.all()
@@ -13,6 +14,7 @@ app.get('/players',(req,res) => {
     })
 })
 
+//increments likes for a player up by 1
 app.post("/like",(req,res) => {
     const {id} = req.body
     console.info(typeof id, req.body)
@@ -29,6 +31,7 @@ app.post("/like",(req,res) => {
     })
 })
 
+//increments likes for a player down by 1
 app.post("/dislike",(req,res) => {
     const {id} = req.body
     const query = db.prepare(`UPDATE players 
